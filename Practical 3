@@ -1,0 +1,188 @@
+SPDD PRACTICAL - 3
+
+Name : Prathamesh Rajbhoj
+Branch : CSE
+Roll No : A - 53
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Aim : Study of preprocessor directives.
+a. Write down definitions for the following (Using preprocessor directives):
+1. Sum of digit of a number.
+2. Reverse of a number.
+3. To test whether a number is palindrome or not. Make use of the macros you defined in
+(1) and (2) above.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+header2.h
+
+#define sumofdigit(n) ({int sum=0;\
+    int z=n;\
+    while(z>0){\
+        sum+=(z%10);\
+        z=z/10;}\
+    sum; })
+
+#define reverse(z) ({int sum=0;\
+    int n=z;\
+    while(n>0){\
+        sum=sum*10+n%10;\
+        n=n/10;}\
+    sum; })
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+main.c
+#include <stdio.h>
+#include <math.h>
+#include "header2.h"
+
+int main()
+{
+    int sd,rev,pal;
+
+    printf("\n\nEnter number to Find Sum of Digit : ");
+    scanf("%d", &sd);
+
+    int sm = sumofdigit(sd);
+    printf("Sum of digit : %d\n",sm);
+
+    printf("\n\nEnter number to be reversed : ");
+    scanf("%d", &rev);
+
+    int rev1 = reverse(rev);
+    printf("Reversed Number : %d\n\n",rev1);
+    
+    printf("\n\nEnter number to Check Palindrome: ");
+    scanf("%d", &pal);
+
+    int rev2 = reverse(pal);
+
+    if(pal==rev2){
+        printf("PALINDROME\n\n");
+    }
+    else{
+        printf("NOT PALINDROME\n\n");
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+AreaPeri.h
+
+#define PI 3.14
+
+#define PerimeterSquare(a) (4*a)
+
+#define AreaSquare(a) (a*a)
+
+#define PerimeterCircle(r) (2*PI*r)
+
+#define AreaCircle(r) (PI*r*r)
+
+#define AreaTriangle(a,b,c) ({\
+    int s = (a+b+c)/2;\
+    int area = (s*(s-a)*(s-b)*(s-c));\
+    int ans=sqrt(area);\
+    ans;\
+})
+
+#define PerimeterTriangle(a,b,c) (a+b+c)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+main.c
+
+#include <stdio.h>
+#include <math.h>
+#include "areaperi.h"
+
+int main()
+{
+    int x;
+    float y;
+
+    int inp, inp1, inp2, inp3;
+
+    printf("CHOICES AVAIALBLE \n\n");
+    printf("1. Permeter of Square\n");
+    printf("2. Area of Square\n");
+    printf("3. Permeter of Circle\n");
+    printf("4. Area of Circle\n");
+    printf("5. Permeter of Triangle\n");
+    printf("6. Area of Triangle\n");
+    printf("7. EXIT\n\n");
+
+    while (1)
+    {
+        int ch;
+        printf("\nEnter Choice : ");
+        scanf("%d", &ch);
+        if (ch == 7)
+            return 0;
+        switch (ch)
+        {
+        case 1:
+            printf("Enter Side of Square: ");
+            scanf("%d", &inp);
+            x = PerimeterSquare(inp);
+            printf("%d\n", x);
+            break;
+        case 2:
+            printf("Enter Side of Square: ");
+            scanf("%d", &inp);
+            x = AreaSquare(inp);
+            printf("%d\n", x);
+            break;
+        case 3:
+            printf("Enter Radius : ");
+            scanf("%d", &inp);
+            y = PerimeterCircle(inp);
+            printf("%f\n", y);
+            break;
+        case 4:
+            printf("Enter Radius : ");
+            scanf("%d", &inp);
+            y = AreaCircle(inp);
+            printf("%f\n", y);
+            break;
+        case 5:
+            printf("Enter 3 Sides of Triangle : ");
+            scanf("%d", &inp1);
+            scanf("%d", &inp2);
+            scanf("%d", &inp3);
+            x = PerimeterTriangle(inp1, inp2, inp3);
+            printf("%d\n", x);
+            break;
+        case 6:
+            printf("Enter 3 Sides of Triangle : ");
+            scanf("%d", &inp1);
+            scanf("%d", &inp2);
+            scanf("%d", &inp3);
+            x = AreaTriangle(inp1, inp2, inp3);
+            printf("%d\n", x);
+            break;
+        }
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
