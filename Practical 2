@@ -1,0 +1,120 @@
+SPDD PRACTICAL - 2
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Aim : 
+
+Study of creation of Window.
+Write a program to create a window with a menu bar.
+Try to display a window with different combinations of window styles and observe the results.
+Write a program, which receives an integer as a command line argument, creates edit window, and based on the value of the integer displays button window as maximized / minimized / normal.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+C++ Code :
+
+#ifndef UNICODE
+#define UNICODE
+#endif
+#include <windows.h>
+#include <iostream>
+using namespace std;
+
+HMENU hMenu;
+void addMenu(HWND hwnd);
+
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
+{
+    // Register the window class.
+    const wchar_t CLASS_NAME[] = L"Sample Window Class";
+
+    WNDCLASS wc = {};
+    wc.lpfnWndProc = WindowProc;
+    wc.hInstance = hInstance;
+    wc.lpszClassName = CLASS_NAME;
+    RegisterClass(&wc);
+
+    // Create the window.
+    HWND hwnd = CreateWindow(
+        //0,                           // Optional window styles.
+        CLASS_NAME,                  // Window class
+        L"Learn to Program Windows", // Window text
+        WS_OVERLAPPEDWINDOW,         // Window style
+        // Size and position
+CW_USEDEFAULT,
+        100,100,500,500,
+        0,      // Parent handler
+        0,      // Menu handler
+        hInstance, // Application Instance handle
+        0       // Additional application data
+    );
+
+    if (hwnd == NULL)
+    {
+        return 0;
+    }
+
+    ShowWindow(hwnd, nCmdShow);
+    MSG msg = {};
+
+    while (GetMessage(&msg, NULL, 0, 0) > 0)
+    {
+        TranslateMessage(&msg);   // unique hexadecimal is converted
+         DispatchMessage(&msg);   // message dispatched
+     }
+    return 0;
+}
+
+
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    cout<<"Hello...running infinite"<<endl;
+
+    switch (uMsg)
+    {
+    case WM_QUIT:
+        PostQuitMessage(0);
+        break;
+    case WM_CREATE:
+        addMenu(hwnd);
+    case WM_COMMAND:
+        switch(wParam){
+            case 1:
+                MessageBeep(1);
+                break;
+        }
+    default:
+        return DefWindowProc(hwnd, uMsg, wParam, lParam);
+    }
+}
+
+void addMenu(HWND hwnd){
+            hMenu = CreateMenu();
+            HMENU hFileMenu = CreateMenu();
+
+            const wchar_t d[] = L"New";
+            const wchar_t d1[] = L"Open";
+
+            AppendMenu(hFileMenu,MF_STRING,NULL,d);
+            AppendMenu(hFileMenu,MF_SEPARATOR,NULL,NULL);
+            AppendMenu(hFileMenu,MF_STRING,NULL,d1);
+
+            const wchar_t s[] = L"File";
+            const wchar_t s1[] = L"Edit";
+
+            const wchar_t s2[] = L"Exit";
+            AppendMenu(hMenu,MF_POPUP,(UINT_PTR)hFileMenu,s);
+            AppendMenu(hMenu,MF_STRING,2,s1);
+            AppendMenu(hMenu,MF_STRING,3,s2);
+
+            SetMenu(hwnd,hMenu);        
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
