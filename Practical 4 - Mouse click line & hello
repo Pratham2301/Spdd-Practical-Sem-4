@@ -5,7 +5,7 @@ Aim : Study of Mouse Movement under window.
 a. Write a program that would draw a line by joining the new point where you have clicked the
 left mouse button with the last point where you clicked the left mouse button.
 
-b. Write a program, which displays &quot;hello&quot; at any place in the window where you click the left
+b. Write a program, which displays hello at any place in the window where you click the left
 mouse button. If you click the right mouse button the color of subsequent hellos should change.
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
