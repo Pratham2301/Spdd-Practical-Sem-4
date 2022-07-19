@@ -34,15 +34,11 @@ mouse button. If you click the right mouse button the color of subsequent hellos
 
 
 5. Study of preprocessor directives.
-a. Write down definitions for the following (Using preprocessor directives):
-1. Sum of digit of a number.
-2. Reverse of a number.
-3. To test whether a number is palindrome or not. Make use of the macros you defined in
-(1) and (2) above.
-b. Write macro definitions with arguments for calculation of area and perimeter of a triangle, a
-square and a circle. Store these macro definitions in a file called “areaperi.h”. Include this file in
-your program, and call the macro definitions for calculating area and perimeter for different
-squares, triangles and circles.
+       a. Write down definitions for the following (Using preprocessor directives):
+          1. Sum of digit of a number.
+          2. Reverse of a number.
+          3. To test whether a number is palindrome or not. Make use of the macros you defined in (1) and (2) above.
+       b. Write macro definitions with arguments for calculation of area and perimeter of a triangle, a square and a circle. Store these macro definitions in a file called “areaperi.h”. Include this file in your program, and call the macro definitions for calculating area and perimeter for differentsquares, triangles and circles.
 
 
 
