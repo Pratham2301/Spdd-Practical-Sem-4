@@ -1,146 +1,179 @@
 Practical 4.
+
+Aim : Study of Mouse Movement under window.
+
+a. Write a program that would draw a line by joining the new point where you have clicked the
+left mouse button with the last point where you clicked the left mouse button.
+
+b. Write a program, which displays &quot;hello&quot; at any place in the window where you click the left
+mouse button. If you click the right mouse button the color of subsequent hellos should change.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 a)
 Code:
+
 #include <stdio.h>
 #include <windows.h>
 #include <stdlib.h>
 #include <wingdi.h>
 #include <gdiplus.h>
 HMENU hMenu;
-int flag =0;
+int flag = 0;
 int x, y;
-void AddMenu(HWND hwnd){
-hMenu = CreateMenu();
-HMENU hFileMenu = CreateMenu();
-HMENU NewFileMenu = CreateMenu();
-AppendMenu(hFileMenu, MF_POPUP, (UINT_PTR)NewFileMenu, "New");
-AppendMenu(NewFileMenu, MF_STRING, NULL, "C file");
-AppendMenu(NewFileMenu, MF_STRING, NULL, "Java file");
-AppendMenu(hFileMenu, MF_SEPARATOR, NULL, NULL);
-AppendMenu(hFileMenu, MF_STRING, NULL, "Open");
-AppendMenu(hMenu, MF_POPUP, (UINT_PTR)hFileMenu, "File");
-AppendMenu(hMenu, MF_STRING, 2, "Edit");
-AppendMenu(hMenu, MF_STRING, 3, "View");
-SetMenu(hwnd, hMenu);
+void AddMenu(HWND hwnd)
+{
+    hMenu = CreateMenu();
+    HMENU hFileMenu = CreateMenu();
+    HMENU NewFileMenu = CreateMenu();
+    AppendMenu(hFileMenu, MF_POPUP, (UINT_PTR)NewFileMenu, "New");
+    AppendMenu(NewFileMenu, MF_STRING, NULL, "C file");
+    AppendMenu(NewFileMenu, MF_STRING, NULL, "Java file");
+    AppendMenu(hFileMenu, MF_SEPARATOR, NULL, NULL);
+    AppendMenu(hFileMenu, MF_STRING, NULL, "Open");
+    AppendMenu(hMenu, MF_POPUP, (UINT_PTR)hFileMenu, "File");
+    AppendMenu(hMenu, MF_STRING, 2, "Edit");
+    AppendMenu(hMenu, MF_STRING, 3, "View");
+    SetMenu(hwnd, hMenu);
 }
 LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT umsg, WPARAM wparam,
-LPARAM lparam){
-POINT pt2;
-PAINTSTRUCT ps;
-HPEN pen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
-HDC handle;
-switch(umsg){
-case WM_CREATE:
-AddMenu(hwnd);
-case WM_COMMAND:
-switch(wparam){
-case 1:
-MessageBeep(2);
-break;
-case 2:
-MessageBeep(2);
-break;
-case 3:
-MessageBeep(2);
-break;
-}
-break;
-case WM_DESTROY:
-PostQuitMessage(0);
-break;
-case WM_LBUTTONDOWN:
-// ha = BeginPaint(hwnd, &ps);
-if (flag == 0)
+                                 LPARAM lparam)
 {
-x = LOWORD(lparam);
-y = HIWORD(lparam);
-flag = 1;
+    POINT pt2;
+    PAINTSTRUCT ps;
+    HPEN pen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
+    HDC handle;
+    switch (umsg)
+    {
+    case WM_CREATE:
+        AddMenu(hwnd);
+    case WM_COMMAND:
+        switch (wparam)
+        {
+        case 1:
+            MessageBeep(2);
+            break;
+        case 2:
+            MessageBeep(2);
+            break;
+        case 3:
+            MessageBeep(2);
+            break;
+        }
+        break;
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        break;
+    case WM_LBUTTONDOWN:
+        // ha = BeginPaint(hwnd, &ps);
+        if (flag == 0)
+        {
+            x = LOWORD(lparam);
+            y = HIWORD(lparam);
+            flag = 1;
+        }
+        else
+        {
+            handle = GetDC(hwnd);
+            SelectObject(handle, pen);
+            pt2.x = LOWORD(lparam);
+            pt2.y = HIWORD(lparam);
+            MoveToEx(handle, x, y, 0);
+            LineTo(handle, pt2.x, pt2.y);
+            ReleaseDC(hwnd, handle);
+            flag = 0;
+        }
+        break;
+    default:
+        return DefWindowProc(hwnd, umsg, wparam, lparam);
+    }
 }
-else
+int WINAPI WinMain(HINSTANCE i, HINSTANCE prev, LPSTR lp, int cmd)
 {
-handle = GetDC(hwnd);
-SelectObject(handle, pen);
-pt2.x = LOWORD(lparam);
-pt2.y = HIWORD(lparam);
-MoveToEx(handle, x,y, 0);
-LineTo(handle,pt2.x, pt2.y);
-ReleaseDC(hwnd, handle);
-flag = 0;
+    HWND hld;
+    const wchar_t CLASS_NAME[] = L"SAMPLE WINDOW CLASS";
+    MSG msg = {};
+    WNDCLASS wc = {};
+    wc.lpfnWndProc = WindowProcedure;
+    wc.hInstance = i;
+    wc.lpszClassName = CLASS_NAME;
+    // Register class
+    RegisterClass(&wc);
+    hld = CreateWindow(CLASS_NAME, "My Window",
+                       WS_OVERLAPPEDWINDOW | WS_HSCROLL | WS_VSCROLL | WS_ICONIC,
+                       100, 100, 500, 500, 0, 0, i, 0);
+    ShowWindow(hld, cmd);
+    while (GetMessage(&msg, NULL, 0, 0) > 0)
+    {
+        printf("message1");
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+    return 0;
 }
-break;
-default:
-return DefWindowProc(hwnd, umsg, wparam, lparam);
-}
-}
-int WINAPI WinMain(HINSTANCE i, HINSTANCE prev, LPSTR lp, int cmd){
-HWND hld;
-const wchar_t CLASS_NAME[] = L"SAMPLE WINDOW CLASS";
-MSG msg = {};
-WNDCLASS wc ={};
-wc.lpfnWndProc = WindowProcedure;
-wc.hInstance = i;
-wc.lpszClassName = CLASS_NAME;
-// Register class
-RegisterClass(&wc);
-hld = CreateWindow(CLASS_NAME, "My Window",
-WS_OVERLAPPEDWINDOW | WS_HSCROLL | WS_VSCROLL
-| WS_ICONIC,
-100, 100, 500, 500, 0, 0, i, 0);
-ShowWindow(hld, cmd);
-while(GetMessage(&msg, NULL, 0, 0) > 0){
-printf("message1");
-TranslateMessage(&msg);
-DispatchMessage(&msg);
-}
-return 0;
-}
-Output:
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 b)
 Code:
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
 LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT umsg, WPARAM wparam,
-LPARAM lparam){
-POINT pt;
-POINT pt2;
-HPEN pen = CreatePen(PS_DOT,1,RGB(0,255,0));
-HDC handle;
-switch(umsg){
-case WM_DESTROY:
-PostQuitMessage(0);
-break;
-case WM_LBUTTONDOWN:
-handle = GetDC(hwnd);
-pt.x = LOWORD(lparam);
-pt.y = HIWORD(lparam);
-printf("%d",pt.x);
-TextOutA(handle, pt.x, pt.y, "hello", 6);
-ReleaseDC(hwnd, handle);
-break;
-default:
-return DefWindowProc(hwnd, umsg, wparam, lparam);
+                                 LPARAM lparam)
+{
+    POINT pt;
+    POINT pt2;
+    HPEN pen = CreatePen(PS_DOT, 1, RGB(0, 255, 0));
+    HDC handle;
+    switch (umsg)
+    {
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        break;
+    case WM_LBUTTONDOWN:
+        handle = GetDC(hwnd);
+        pt.x = LOWORD(lparam);
+        pt.y = HIWORD(lparam);
+        printf("%d", pt.x);
+        TextOutA(handle, pt.x, pt.y, "hello", 6);
+        ReleaseDC(hwnd, handle);
+        break;
+    default:
+        return DefWindowProc(hwnd, umsg, wparam, lparam);
+    }
 }
-}
-int WINAPI WinMain(HINSTANCE i, HINSTANCE prev, LPSTR lp, int cmd){
-HWND hld;
-const wchar_t CLASS_NAME[] = L"SAMPLE WINDOW CLASS";
-MSG msg = {};
-WNDCLASS wc ={};
-wc.lpfnWndProc = WindowProcedure;
-wc.hInstance = i;
-wc.lpszClassName = CLASS_NAME;
-// Register class
-RegisterClass(&wc);
-hld = CreateWindow(CLASS_NAME, "My Window",
-WS_OVERLAPPEDWINDOW | WS_HSCROLL | WS_VSCROLL
-| WS_ICONIC,
-100, 100, 500, 500, 0, 0, i, 0);
-ShowWindow(hld, cmd);
-while(GetMessage(&msg, NULL, 0, 0) > 0){
-printf("message1");
-TranslateMessage(&msg);
-DispatchMessage(&msg);
-}
-return 0;
+int WINAPI WinMain(HINSTANCE i, HINSTANCE prev, LPSTR lp, int cmd)
+{
+    HWND hld;
+    const wchar_t CLASS_NAME[] = L"SAMPLE WINDOW CLASS";
+    MSG msg = {};
+    WNDCLASS wc = {};
+    wc.lpfnWndProc = WindowProcedure;
+    wc.hInstance = i;
+    wc.lpszClassName = CLASS_NAME;
+    // Register class
+    RegisterClass(&wc);
+    hld = CreateWindow(CLASS_NAME, "My Window",
+                       WS_OVERLAPPEDWINDOW | WS_HSCROLL | WS_VSCROLL | WS_ICONIC,
+                       100, 100, 500, 500, 0, 0, i, 0);
+    ShowWindow(hld, cmd);
+    while (GetMessage(&msg, NULL, 0, 0) > 0)
+    {
+        printf("message1");
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+    return 0;
 }
