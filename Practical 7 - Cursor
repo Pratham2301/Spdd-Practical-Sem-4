@@ -1,0 +1,74 @@
+// Practical 7. Code :
+
+7. Write a menu driven program for following
+a. Setting cursor size
+b. Scroll the window down
+c. Positioning the cursor
+d. Reading the cursor position.
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <stdio.h>
+#include <conio.h>
+#include <dos.h>
+union REGS in, out;
+void scroll()
+{
+    in.h.ah = 6;
+    in.h.al = 1;
+    in.h.bh = 61;
+    in.x.cx = 0;
+    in.h.dh = 24;
+    in.h.dl = 79;
+    int86(0x10, &in, &out);
+}
+void read()
+{
+    in.h.ah = 3;
+    in.h.bh = 0;
+    int86(0x10, &in, &out);
+    printf("Starting scan line=%d\nRow=%d\nColumn=%d\nEnding scanline=%d", out.h.ch, out.h.dh, out.h.dl, out.h.cl);
+}
+void setposition()
+{
+    in.h.ah = 2;
+    in.h.bh = 0;
+    in.h.dh = 8;
+    in.h.dl = 15;
+    int86(0x10, &in, &out);
+}
+void setsize()
+{
+    in.h.ah = 1;
+    in.h.ch = 1;
+    in.h.cl = 14;
+    int86(0x10, &in, &out);
+}
+void main()
+{
+    int choice;
+    clrscr();
+    printf("Enter\n1.set size\n2.set position\n3.Read Position\n4.Scroll\n5.exit");
+    scanf("%d", &choice);
+    switch (choice)
+    {
+    case 1:
+        setsize();
+        break;
+    case 2:
+        setposition();
+        break;
+    case 3:
+        read();
+        break;
+    case 4:
+        scroll();
+        break;
+    }
+    getch();
+}
