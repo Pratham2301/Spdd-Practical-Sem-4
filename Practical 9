@@ -1,0 +1,101 @@
+SPDD PRACTICAL - 1
+
+Name : Prathamesh Rajbhoj
+Branch : CSE
+Roll No : A - 53
+
+Aim : 
+Study of Windows Programming
+Write a program that prints the value of hInstance in a message box.
+Write a program that receives a number as a command line argument and prints its factorial value in a message box.
+Write a program that receives a multiple word string as a command line argument and prints number of words in string in a message box.
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+Print Value of hInstance
+
+C Code :
+
+#include <windows.h>
+#include<stdio.h>
+
+int WINAPI WinMain( HINSTANCE hInstance,HINSTANCE prevInstance,
+LPSTR lpSTR, int ncmdShow )
+{
+    char str[50];
+    sprintf(str, "value is %d", hInstance);
+
+    MessageBox(0,str,"First",MB_OK);
+    
+    return 0;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+Factorial
+
+C Code :
+#include <windows.h>
+#include<stdio.h>
+
+int WINAPI WinMain( HINSTANCE hInstance,HINSTANCE prevInstance,LPSTR lpSTR, int ncmdShow )
+{
+    char str[50];
+
+    int n = atoi(lpSTR);
+    int ans=1;
+
+    while(n>0)
+    {
+        ans*=n;
+        n--;
+    }
+
+    sprintf(str, "Factorial is %d", ans);
+    MessageBox(0,str,"Instance",MB_OK);
+    return 0;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+Number of words in a string
+
+C Code :
+#include <windows.h>
+#include<stdio.h>
+
+int WINAPI WinMain( HINSTANCE hInstance,HINSTANCE prevInstance,LPSTR lpSTR, int ncmdShow )
+{
+    char str[50];
+
+    int n=lstrlen(lpSTR);
+
+    int ans=0;
+
+    for(int i=0;i<n;i++)
+    {
+        if(lpSTR[i]==' ')
+        {
+            ans++;
+        }
+    }
+
+    sprintf(str, "Words are %d", ans);
+
+    MessageBox(0,str,"Answer",MB_OK);
+
+    return 0;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
