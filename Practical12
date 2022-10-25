@@ -1,0 +1,155 @@
+#include <stdio.h>
+#include <windows.h>
+#include <stdlib.h>
+
+HMENU hMenu;
+void AddMenu(HWND hwnd){
+   hMenu = CreateMenu();
+   HMENU hFileMenu = CreateMenu();
+   AppendMenu(hFileMenu, MF_STRING, NULL, "New");
+   AppendMenu(hFileMenu, MF_SEPARATOR, NULL, NULL);
+   AppendMenu(hFileMenu, MF_STRING, NULL, "Open");
+
+
+   AppendMenu(hMenu, MF_POPUP, (UINT_PTR)hFileMenu, "File");
+   AppendMenu(hMenu, MF_STRING, 2, "Edit");
+   AppendMenu(hMenu, MF_STRING, 3, "View");
+   SetMenu(hwnd, hMenu);
+
+}
+
+LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam){
+   switch(umsg){
+
+   case WM_CREATE:
+       AddMenu(hwnd);
+       case WM_COMMAND:
+       switch(wparam){
+           case 1:
+           MessageBeep(2);
+           break;
+           case 2:
+           MessageBeep(2);
+           break;
+           case 3:
+           MessageBeep(2);
+           break;
+       }
+       break;
+
+   case WM_DESTROY:
+   PostQuitMessage(0);
+   break;
+
+   default:
+       return DefWindowProc(hwnd, umsg, wparam, lparam);
+
+   }
+}
+
+int WINAPI WinMain(HINSTANCE i, HINSTANCE prev, LPSTR lp, int cmd){
+   HWND hld;
+   const wchar_t CLASS_NAME[] = L"SAMPLE WINDOW CLASS";
+   MSG msg = {};
+
+
+   WNDCLASS wc ={};
+   wc.lpfnWndProc = WindowProcedure;
+   wc.hInstance = i;
+   wc.lpszClassName = CLASS_NAME;
+
+   RegisterClass(&wc);
+
+   int argu = atoi(lp);
+   printf("%d", argu);
+
+   switch(argu){
+   case 1:
+   hld = CreateWindow(CLASS_NAME, "My Window", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, 500, 500, 0, 0, i, 0);
+   ShowWindow(hld, argu);
+     if(!hld)
+   {
+       MessageBox(0, L"CreateWindowEx failed", 0, 0);
+       return GetLastError();
+   }
+
+   break;
+
+   case 2:
+   hld = CreateWindow(CLASS_NAME, "My Window", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, 500, 500, 0, 0, i, 0);
+   ShowWindow(hld, argu);
+     if(!hld)
+   {
+       MessageBox(0, L"CreateWindowEx failed", 0, 0);
+       return GetLastError();
+   }
+
+   break;
+
+   case 3:
+   hld = CreateWindow(CLASS_NAME, "My Window", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, 500, 500, 0, 0, i, 0);
+   ShowWindow(hld, argu);
+     if(!hld)
+   {
+       MessageBox(0, L"CreateWindowEx failed", 0, 0);
+       return GetLastError();
+   }
+
+   break;
+   }
+
+
+// HWND hld = CreateWindow(CLASS_NAME, "My Window", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 100, 100, 500, 500, 0, 0, i, 0);
+// ShowWindow(hld, cmd);
+
+   while(GetMessage(&msg, NULL, 0, 0) > 0){
+            printf("message1");
+       TranslateMessage(&msg);
+       DispatchMessage(&msg);
+   }
+
+   return 0;
+    argu = atoi(lp);
+   printf("%d", argu);
+   MessageBox(NULL, argu , "Output" ,MB_OK);
+
+   switch(argu){
+   case 1:
+   hld = CreateWindow(CLASS_NAME, L"Normal Window", WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+                      CW_USEDEFAULT, CW_USEDEFAULT, 500, 500, HWND_DESKTOP, NULL, i, NULL);
+   ShowWindow(hld, argu);
+     if(!hld)
+   {
+       MessageBox(0, L"CreateWindowEx failed", 0, 0);
+       return GetLastError();
+   }
+
+   break;
+
+   case 2:
+   hld = CreateWindow(CLASS_NAME, "Minimized window", WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+                      CW_USEDEFAULT, CW_USEDEFAULT, 500, 500, HWND_DESKTOP, NULL, i, NULL);
+   ShowWindow(hld, argu);
+     if(!hld)
+   {
+       MessageBox(0, L"CreateWindowEx failed", 0, 0);
+       return GetLastError();
+   }
+
+   break;
+
+   case 3:
+   hld = CreateWindow(CLASS_NAME, "Maximized window", WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+                      CW_USEDEFAULT, CW_USEDEFAULT, 500, 500, HWND_DESKTOP, NULL, i, NULL);
+   ShowWindow(hld, argu);
+     if(!hld)
+   {
+       MessageBox(0, L"CreateWindowEx failed", 0, 0);
+       return GetLastError();
+   }
+
+   break;
+   }
+
+
+}
